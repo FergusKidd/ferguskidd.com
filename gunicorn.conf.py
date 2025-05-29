@@ -5,7 +5,7 @@ bind = f"0.0.0.0:{os.environ.get('PORT', '8000')}"
 
 # Worker configuration
 workers = 1  # Start with 1 worker for Azure Web Apps
-worker_class = "uvicorn.workers.UvicornWorker"
+worker_class = "uvicorn.workers.UvicornWorker"  # Use Uvicorn worker for FastAPI
 worker_connections = 1000
 max_requests = 1000
 max_requests_jitter = 50

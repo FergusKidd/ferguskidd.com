@@ -16,7 +16,6 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -44,4 +43,10 @@ instance/
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Logs
+*.log
+
+# Azure
+.azure/ 
