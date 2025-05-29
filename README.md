@@ -28,7 +28,7 @@ uvicorn main:app --reload
 
 ## Deployment to Azure Web Apps
 
-1. Create an Azure Web App with Python 3.9 runtime
+1. Create an Azure Web App with Python 3.13 runtime
 2. Configure the following application settings in Azure Portal:
    - `AZURE_CONNECTION_STRING`: Your Azure Storage connection string
    - `AZURE_CONTAINER_NAME`: video
