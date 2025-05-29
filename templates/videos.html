@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Videos | Fergus Kidd{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">Videos</h1>
+    
+    {% if videos %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for video in videos %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="aspect-video bg-gray-200 flex items-center justify-center">
+                    <video class="w-full h-full object-cover" controls preload="metadata">
+                        <source src="{{ video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        {{ video.name.replace('.mp4', '').replace('_', ' ').replace('-', ' ').title() }}
+                    </h3>
+                    <div class="text-sm text-gray-600 mb-2">
+                        <span>{{ video.last_modified.strftime('%B %d, %Y') }}</span>
+                        {% if video.size %}
+                        <span class="mx-2">•</span>
+                        <span>{{ "%.1f"|format(video.size / 1024 / 1024) }} MB</span>
+                        {% endif %}
+                    </div>
+                    <a href="/videos/{{ video.name }}" class="text-blue-600 hover:text-blue-800 text-sm">
+                        View Details →
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <div class="text-gray-500 text-lg">No videos available at the moment.</div>
+            <div class="text-gray-400 text-sm mt-2">Check back later for new content!</div>
+        </div>
+    {% endif %}
+    
+    <div class="mt-8">
+        <a href="/" class="text-blue-600 hover:text-blue-800">← Back to Home</a>
+    </div>
+</div>
+{% endblock %} 

@@ -5,8 +5,30 @@ from pathlib import Path
 import markdown2
 import json
 from datetime import datetime
+from azure.storage.blob import BlobServiceClient
+import os
+from urllib.parse import urlparse
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = FastAPI()
+
+# Azure Storage configuration
+AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")
+AZURE_CONTAINER_NAME = os.getenv("AZURE_CONTAINER_NAME", "video")
+
+# Initialize Azure Blob Service Client
+try:
+    if AZURE_CONNECTION_STRING:
+        blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONNECTION_STRING)
+    else:
+        print("Warning: AZURE_CONNECTION_STRING not found in environment variables")
+        blob_service_client = None
+except Exception as e:
+    print(f"Warning: Could not initialize Azure Storage client: {e}")
+    blob_service_client = None
 
 # Set up templates first
 templates = Jinja2Templates(directory="templates")
@@ -17,6 +39,72 @@ app.mount("/static", static_files, name="static")
 
 # Blog posts directory
 POSTS_DIR = Path("content/posts")
+
+def get_azure_video_url(blob_name):
+    """Generate a direct URL to a video blob in Azure Storage"""
+    if not blob_service_client:
+        return None
+    
+    try:
+        # Generate the blob URL
+        blob_client = blob_service_client.get_blob_client(
+            container=AZURE_CONTAINER_NAME, 
+            blob=blob_name
+        )
+        return blob_client.url
+    except Exception as e:
+        print(f"Error generating video URL for {blob_name}: {e}")
+        return None
+
+def list_azure_videos():
+    """List all video files in the Azure Storage container"""
+    if not blob_service_client:
+        return []
+    
+    try:
+        container_client = blob_service_client.get_container_client(AZURE_CONTAINER_NAME)
+        videos = []
+        
+        for blob in container_client.list_blobs():
+            # Filter for video file extensions
+            if blob.name.lower().endswith(('.mp4', '.mov', '.avi', '.mkv', '.webm')):
+                video_info = {
+                    'name': blob.name,
+                    'url': get_azure_video_url(blob.name),
+                    'size': blob.size,
+                    'last_modified': blob.last_modified
+                }
+                videos.append(video_info)
+        
+        # Sort by last modified date (newest first)
+        videos.sort(key=lambda x: x['last_modified'], reverse=True)
+        return videos
+    except Exception as e:
+        print(f"Error listing videos from Azure Storage: {e}")
+        return []
+
+def get_video_by_name(video_name):
+    """Get a specific video by name from Azure Storage"""
+    if not blob_service_client:
+        return None
+    
+    try:
+        blob_client = blob_service_client.get_blob_client(
+            container=AZURE_CONTAINER_NAME, 
+            blob=video_name
+        )
+        
+        # Check if blob exists
+        if blob_client.exists():
+            return {
+                'name': video_name,
+                'url': blob_client.url,
+                'properties': blob_client.get_blob_properties()
+            }
+        return None
+    except Exception as e:
+        print(f"Error getting video {video_name}: {e}")
+        return None
 
 def get_posts():
     posts = []
@@ -182,6 +270,42 @@ async def talk(request: Request):
         {"request": request, "current_year": datetime.now().year}
     )
 
+@app.get("/videos")
+async def videos(request: Request):
+    """Display all available videos from Azure Storage"""
+    video_list = list_azure_videos()
+    return templates.TemplateResponse(
+        "videos.html",
+        {
+            "request": request, 
+            "videos": video_list, 
+            "current_year": datetime.now().year
+        }
+    )
+
+@app.get("/videos/{video_name}")
+async def video_detail(request: Request, video_name: str):
+    """Display a specific video"""
+    video = get_video_by_name(video_name)
+    if not video:
+        return templates.TemplateResponse(
+            "404.html",
+            {"request": request, "current_year": datetime.now().year}
+        )
+    return templates.TemplateResponse(
+        "video_detail.html",
+        {
+            "request": request, 
+            "video": video, 
+            "current_year": datetime.now().year
+        }
+    )
+
+@app.get("/api/videos")
+async def api_videos():
+    """API endpoint to get video list as JSON"""
+    return {"videos": list_azure_videos()}
+
 # Add a custom Jinja2 filter for date formatting
 def format_date(value):
     try:
@@ -193,4 +317,6 @@ templates.env.filters['format_date'] = format_date
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True) 
+    # Use PORT environment variable if available (Azure Web Apps sets this)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False) 
