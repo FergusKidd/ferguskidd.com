@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | Fergus Kidd{% endblock %}
+
+{% block content %}
+<article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
+    <div class="text-gray-600 mb-6">
+        <span>{{ post.date_posted.strftime('%B %d, %Y') }}</span>
+        {% if post.category %}
+        <span class="mx-2">•</span>
+        <span class="text-blue-600">{{ post.category }}</span>
+        {% endif %}
+    </div>
+    <div class="prose max-w-none mb-6">
+        {{ post.content | safe }}
+    </div>
+    {% if post.tags %}
+    <div class="mt-4">
+        {% for tag in post.tags.split(',') %}
+        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+            #{{ tag.strip() }}
+        </span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="mt-8">
+        <a href="/" class="text-blue-600 hover:text-blue-800">← Back to Home</a>
+    </div>
+</article>
+{% endblock %} 
