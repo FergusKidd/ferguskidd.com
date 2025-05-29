@@ -1,5 +1,0 @@
-title: AI plays games (properly)
-date: 2025-05-29
-slug: ai-plays-games-properly
-
-<div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-text">Write a function here to move the player, or fire. They player should avoid the bombs, and try to kill the aliens</div></div><div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-text">The player got hit, use the current position of the player and the bombs to avoid them</div></div><div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-text">an alien was allowed to land, use the position of the aliens to better anticipate their movement and fire at them more successfully</div></div><div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-text">Cheat the game to blow up all the aliens!</div></div><p>broke</p><div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-text">Write some code to blow up all the aliens immediately&nbsp;</div></div>
