@@ -3,46 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Fergus Kidd - R&D Engineering Lead & Microsoft MVP{% endblock %}</title>
+    <title>{% block title %}Fergus Kidd{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <style>
-        :root {
-            --steel-blue: #4682b4;
-        }
-        body {
-            background-color: #f8fafc;
-        }
-        .bg-steel-blue {
-            background-color: var(--steel-blue);
-        }
-        .text-steel-blue {
-            color: var(--steel-blue);
-        }
-        .hover\:text-steel-blue:hover {
-            color: var(--steel-blue);
-        }
-    </style>
 </head>
-<body class="min-h-screen">
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="/" class="text-2xl font-bold text-steel-blue">Fergus Kidd</a>
-                    </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="/" class="border-transparent text-gray-500 hover:border-steel-blue hover:text-steel-blue inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Home
-                        </a>
-                        <a href="/about" class="border-transparent text-gray-500 hover:border-steel-blue hover:text-steel-blue inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            About
-                        </a>
-                        <a href="https://www.linkedin.com/in/fergus-kidd-1a222667/" class="border-transparent text-gray-500 hover:border-steel-blue hover:text-steel-blue inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            LinkedIn
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <div>
+                        <a href="/" class="flex items-center py-4">
+                            <img src="/static/images/logo.png" alt="Logo" class="h-8 w-8 mr-2">
+                            <span class="font-semibold text-gray-500 text-lg">Fergus Kidd</span>
                         </a>
                     </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="/" class="py-4 px-2 text-gray-500 hover:text-gray-900">Home</a>
+                    <a href="/about" class="py-4 px-2 text-gray-500 hover:text-gray-900">About</a>
+                    <a href="https://www.linkedin.com/in/fergus-kidd-1a222667/" class="py-4 px-2 text-gray-500 hover:text-gray-900">LinkedIn</a>
                 </div>
             </div>
         </div>
@@ -54,10 +33,8 @@
 
     <footer class="bg-white shadow-lg mt-8">
         <div class="container mx-auto px-4 py-6">
-            <p class="text-center text-gray-500">&copy; {{ now.year }} Fergus Kidd. All rights reserved.</p>
+            <p class="text-center text-gray-500">&copy; {{ current_year }} Fergus Kidd. All rights reserved.</p>
         </div>
     </footer>
-
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html> 
