@@ -4,8 +4,8 @@ from fastapi.templating import Jinja2Templates
 from pathlib import Path
 import markdown2
 import json
-from datetime import datetime
-from azure.storage.blob import BlobServiceClient
+from datetime import datetime, timedelta
+from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
 import os
 from urllib.parse import urlparse
 from dotenv import load_dotenv
@@ -41,17 +41,28 @@ app.mount("/static", static_files, name="static")
 POSTS_DIR = Path("content/posts")
 
 def get_azure_video_url(blob_name):
-    """Generate a direct URL to a video blob in Azure Storage"""
+    """Generate a direct URL to a video blob in Azure Storage with SAS token"""
     if not blob_service_client:
         return None
     
     try:
-        # Generate the blob URL
+        # Generate SAS token for the blob (valid for 24 hours)
+        sas_token = generate_blob_sas(
+            account_name=blob_service_client.account_name,
+            container_name=AZURE_CONTAINER_NAME,
+            blob_name=blob_name,
+            account_key=blob_service_client.credential.account_key,
+            permission=BlobSasPermissions(read=True),
+            expiry=datetime.utcnow() + timedelta(hours=24)
+        )
+        
+        # Generate the blob URL with SAS token
         blob_client = blob_service_client.get_blob_client(
             container=AZURE_CONTAINER_NAME, 
             blob=blob_name
         )
-        return blob_client.url
+        
+        return f"{blob_client.url}?{sas_token}"
     except Exception as e:
         print(f"Error generating video URL for {blob_name}: {e}")
         return None
@@ -98,13 +109,70 @@ def get_video_by_name(video_name):
         if blob_client.exists():
             return {
                 'name': video_name,
-                'url': blob_client.url,
+                'url': get_azure_video_url(video_name),  # Use SAS token URL
                 'properties': blob_client.get_blob_properties()
             }
         return None
     except Exception as e:
         print(f"Error getting video {video_name}: {e}")
         return None
+
+def replace_video_links_with_azure(content):
+    """Replace local video links and Azure video references with Azure Storage SAS URLs"""
+    if not blob_service_client:
+        return content
+    
+    import re
+    
+    # Pattern 1: Match video tags with local /static/videos/ src
+    static_video_pattern = r'<video[^>]*src="/static/videos/([^"]+)"[^>]*>'
+    
+    # Pattern 2: Match video tags with azure:// protocol or {{azure_video:filename}}
+    azure_video_pattern = r'<video[^>]*src="azure://([^"]+)"[^>]*>'
+    
+    # Pattern 3: Match {{azure_video:filename}} shortcode
+    shortcode_pattern = r'\{\{azure_video:([^}]+)\}\}'
+    
+    def replace_static_video_src(match):
+        video_filename = match.group(1)
+        azure_url = get_azure_video_url(video_filename)
+        
+        if azure_url:
+            # Replace the src attribute with Azure URL
+            updated_tag = match.group(0).replace(f'/static/videos/{video_filename}', azure_url)
+            return updated_tag
+        else:
+            # If video not found in Azure, keep original
+            return match.group(0)
+    
+    def replace_azure_video_src(match):
+        video_filename = match.group(1)
+        azure_url = get_azure_video_url(video_filename)
+        
+        if azure_url:
+            # Replace the azure:// src with actual Azure URL
+            updated_tag = match.group(0).replace(f'azure://{video_filename}', azure_url)
+            return updated_tag
+        else:
+            # If video not found, return empty video tag
+            return '<video controls width="100%"><source src="" type="video/mp4">Video not found</video>'
+    
+    def replace_shortcode(match):
+        video_filename = match.group(1)
+        azure_url = get_azure_video_url(video_filename)
+        
+        if azure_url:
+            # Create a complete video tag
+            return f'<video src="{azure_url}" controls width="100%" style="max-width: 100%; border-radius: 12px;"></video>'
+        else:
+            return '<p>Video not found</p>'
+    
+    # Apply all replacements
+    updated_content = re.sub(static_video_pattern, replace_static_video_src, content)
+    updated_content = re.sub(azure_video_pattern, replace_azure_video_src, updated_content)
+    updated_content = re.sub(shortcode_pattern, replace_shortcode, updated_content)
+    
+    return updated_content
 
 def get_posts():
     posts = []
@@ -157,6 +225,9 @@ def get_posts():
                 
                 # Clean up Ghost CMS specific content
                 body = body.replace("__GHOST_URL__", "")
+                
+                # Replace Azure video shortcodes and links BEFORE markdown processing
+                body = replace_video_links_with_azure(body)
                 
                 # Extract summary from caption or first few sentences
                 summary_text = ""
