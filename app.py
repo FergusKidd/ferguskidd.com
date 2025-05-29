@@ -2,6 +2,7 @@ from flask import Flask, render_template
 import os
 from dotenv import load_dotenv
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 
 from extensions import db, migrate
 
@@ -13,10 +14,12 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///blog.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db.init_app(app)
-migrate.init_app(app, db)
+db = SQLAlchemy(app)
 
 from models import Post
+
+with app.app_context():
+    db.create_all()
 
 @app.context_processor
 def inject_now():
