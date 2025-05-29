@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-steel-blue mb-8">Latest Posts</h1>
+    
+    {% for post in posts %}
+    <article class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+            <a href="/post/{{ post.slug }}" class="hover:text-steel-blue">{{ post.title }}</a>
+        </h2>
+        <div class="text-gray-600 mb-4">
+            <span>{{ post.date_posted.strftime('%B %d, %Y') }}</span>
+            {% if post.category %}
+            <span class="mx-2">•</span>
+            <span class="text-steel-blue">{{ post.category }}</span>
+            {% endif %}
+        </div>
+        <div class="prose max-w-none">
+            {{ post.content[:300] | striptags }}...
+        </div>
+        <div class="mt-4">
+            <a href="/post/{{ post.slug }}" class="text-steel-blue hover:text-blue-800">Read more →</a>
+        </div>
+        {% if post.tags %}
+        <div class="mt-4">
+            {% for tag in post.tags.split(',') %}
+            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #{{ tag.strip() }}
+            </span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </article>
+    {% endfor %}
+</div>
+{% endblock %} 

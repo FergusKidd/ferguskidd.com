@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-4xl font-bold text-steel-blue mb-8">About Fergus Kidd</h1>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-center mb-6">
+            <img src="{{ url_for('static', filename='images/IMG_1172D678349A-1.jpeg') }}" alt="Fergus Kidd" class="rounded-lg shadow-md w-1/2">
+        </div>
+        <p class="text-lg text-gray-700 mb-6 text-justify">
+            Fergus has an academic background in physics and space science. At University College London, Fergus worked on computer vision systems for the ExoMars rover for its planned 2018 mission to Mars. Although sadly, to date, the rover still sits on Earth, this ignited a passion for AI and technology. Fergus has eight years of experience working in AI and has accolades, including a patent in synthetic vision data generation and an OpenUK award nomination for sustainability in software. Today Fergus is Avanade's Emerging Technology R&D Engineering lead. He works on developing assets and demonstrations around new and future technologies, focussing on innovative use cases to show the power of new technologies in the enterprise. Fergus is passionate about STEM education and works with students from school ages to postgraduate to inspire them in their academic journey and encourage the next generation of scientists and engineers.
+        </p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-xs mx-auto">
+        <div class="flex justify-center items-center" data-iframe-width="150" data-iframe-height="270" data-share-badge-id="d452446e-2ea0-4d42-a8e8-a406f24f055d" data-share-badge-host="https://www.credly.com"></div>
+        <script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
+    </div>
+</div>
+{% endblock %} 
