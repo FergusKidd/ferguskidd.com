@@ -1,26 +1,32 @@
 import os
+import multiprocessing
 
-# Bind to the port Azure provides
-bind = f"0.0.0.0:{os.environ.get('PORT', '8000')}"
+# Server socket
+bind = "0.0.0.0:8000"
+backlog = 2048
 
-# Worker configuration
-workers = 1  # Start with 1 worker for Azure Web Apps
-worker_class = "uvicorn.workers.UvicornWorker"  # Use Uvicorn worker for FastAPI
+# Worker processes
+workers = multiprocessing.cpu_count() * 2 + 1
+worker_class = "uvicorn.workers.UvicornWorker"
 worker_connections = 1000
-max_requests = 1000
-max_requests_jitter = 50
-
-# Timeouts
 timeout = 30
 keepalive = 2
 
 # Logging
-loglevel = "info"
 accesslog = "-"
 errorlog = "-"
+loglevel = "info"
 
 # Process naming
-proc_name = "ferguskidd_com"
+proc_name = "ferguskidd"
+
+# Server mechanics
+daemon = False
+pidfile = None
+umask = 0
+user = None
+group = None
+tmp_upload_dir = None
 
 # Preload the application
 preload_app = True 
