@@ -36,4 +36,27 @@
         </div>
     </div>
 </article>
+
+<style>
+/* Make images smaller with larger margins */
+.prose figure.kg-card.kg-image-card {
+    margin: 2rem 0;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.prose figure.kg-card.kg-image-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure text content uses full width */
+.prose p {
+    max-width: none;
+    margin: 1rem 0;
+}
+</style>
 {% endblock %} 
