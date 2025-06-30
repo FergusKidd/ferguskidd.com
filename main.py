@@ -18,6 +18,7 @@ app = FastAPI()
 # Azure Storage configuration
 AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")
 AZURE_CONTAINER_NAME = os.getenv("AZURE_CONTAINER_NAME", "video")
+AZURE_AUDIO_CONTAINER_NAME = os.getenv("AZURE_AUDIO_CONTAINER_NAME", "audio")
 
 # Initialize Azure Blob Service Client
 try:
@@ -39,6 +40,33 @@ app.mount("/static", static_files, name="static")
 
 # Blog posts directory
 POSTS_DIR = Path("content/posts")
+
+def get_azure_audio_url(blob_name):
+    """Generate a direct URL to an audio blob in Azure Storage with SAS token"""
+    if not blob_service_client:
+        return None
+    
+    try:
+        # Generate SAS token for the blob (valid for 24 hours)
+        sas_token = generate_blob_sas(
+            account_name=blob_service_client.account_name,
+            container_name=AZURE_AUDIO_CONTAINER_NAME,
+            blob_name=blob_name,
+            account_key=blob_service_client.credential.account_key,
+            permission=BlobSasPermissions(read=True),
+            expiry=datetime.utcnow() + timedelta(hours=24)
+        )
+        
+        # Generate the blob URL with SAS token
+        blob_client = blob_service_client.get_blob_client(
+            container=AZURE_AUDIO_CONTAINER_NAME, 
+            blob=blob_name
+        )
+        
+        return f"{blob_client.url}?{sas_token}"
+    except Exception as e:
+        print(f"Error generating audio URL for {blob_name}: {e}")
+        return None
 
 def get_azure_video_url(blob_name):
     """Generate a direct URL to a video blob in Azure Storage with SAS token"""
@@ -67,6 +95,33 @@ def get_azure_video_url(blob_name):
         print(f"Error generating video URL for {blob_name}: {e}")
         return None
 
+def list_azure_audios():
+    """List all audio files in the Azure Storage audio container"""
+    if not blob_service_client:
+        return []
+    
+    try:
+        container_client = blob_service_client.get_container_client(AZURE_AUDIO_CONTAINER_NAME)
+        audios = []
+        
+        for blob in container_client.list_blobs():
+            # Filter for audio file extensions
+            if blob.name.lower().endswith(('.mp3', '.wav', '.m4a', '.aac', '.ogg', '.flac')):
+                audio_info = {
+                    'name': blob.name,
+                    'url': get_azure_audio_url(blob.name),
+                    'size': blob.size,
+                    'last_modified': blob.last_modified
+                }
+                audios.append(audio_info)
+        
+        # Sort by last modified date (newest first)
+        audios.sort(key=lambda x: x['last_modified'], reverse=True)
+        return audios
+    except Exception as e:
+        print(f"Error listing audios from Azure Storage: {e}")
+        return []
+
 def list_azure_videos():
     """List all video files in the Azure Storage container"""
     if not blob_service_client:
@@ -94,6 +149,29 @@ def list_azure_videos():
         print(f"Error listing videos from Azure Storage: {e}")
         return []
 
+def get_audio_by_name(audio_name):
+    """Get a specific audio by name from Azure Storage"""
+    if not blob_service_client:
+        return None
+    
+    try:
+        blob_client = blob_service_client.get_blob_client(
+            container=AZURE_AUDIO_CONTAINER_NAME, 
+            blob=audio_name
+        )
+        
+        # Check if blob exists
+        if blob_client.exists():
+            return {
+                'name': audio_name,
+                'url': get_azure_audio_url(audio_name),  # Use SAS token URL
+                'properties': blob_client.get_blob_properties()
+            }
+        return None
+    except Exception as e:
+        print(f"Error getting audio {audio_name}: {e}")
+        return None
+
 def get_video_by_name(video_name):
     """Get a specific video by name from Azure Storage"""
     if not blob_service_client:
@@ -116,6 +194,63 @@ def get_video_by_name(video_name):
     except Exception as e:
         print(f"Error getting video {video_name}: {e}")
         return None
+
+def replace_audio_links_with_azure(content):
+    """Replace local audio links and Azure audio references with Azure Storage SAS URLs"""
+    if not blob_service_client:
+        return content
+    
+    import re
+    
+    # Pattern 1: Match audio tags with local /static/audio/ src
+    static_audio_pattern = r'<audio[^>]*src="/static/audio/([^"]+)"[^>]*>'
+    
+    # Pattern 2: Match audio tags with azure:// protocol or {{azure_audio:filename}}
+    azure_audio_pattern = r'<audio[^>]*src="azure://([^"]+)"[^>]*>'
+    
+    # Pattern 3: Match {{azure_audio:filename}} shortcode
+    shortcode_pattern = r'\{\{azure_audio:([^}]+)\}\}'
+    
+    def replace_static_audio_src(match):
+        audio_filename = match.group(1)
+        azure_url = get_azure_audio_url(audio_filename)
+        
+        if azure_url:
+            # Replace the src attribute with Azure URL
+            updated_tag = match.group(0).replace(f'/static/audio/{audio_filename}', azure_url)
+            return updated_tag
+        else:
+            # If audio not found in Azure, keep original
+            return match.group(0)
+    
+    def replace_azure_audio_src(match):
+        audio_filename = match.group(1)
+        azure_url = get_azure_audio_url(audio_filename)
+        
+        if azure_url:
+            # Replace the azure:// src with actual Azure URL
+            updated_tag = match.group(0).replace(f'azure://{audio_filename}', azure_url)
+            return updated_tag
+        else:
+            # If audio not found, return empty audio tag
+            return '<audio controls width="100%"><source src="" type="audio/mp3">Audio not found</audio>'
+    
+    def replace_shortcode(match):
+        audio_filename = match.group(1)
+        azure_url = get_azure_audio_url(audio_filename)
+        
+        if azure_url:
+            # Create a complete audio tag
+            return f'<audio src="{azure_url}" controls style="width: 100%; max-width: 400px; border-radius: 8px;"></audio>'
+        else:
+            return '<p>Audio not found</p>'
+    
+    # Apply all replacements
+    updated_content = re.sub(static_audio_pattern, replace_static_audio_src, content)
+    updated_content = re.sub(azure_audio_pattern, replace_azure_audio_src, content)
+    updated_content = re.sub(shortcode_pattern, replace_shortcode, content)
+    
+    return updated_content
 
 def replace_video_links_with_azure(content):
     """Replace local video links and Azure video references with Azure Storage SAS URLs"""
@@ -169,8 +304,8 @@ def replace_video_links_with_azure(content):
     
     # Apply all replacements
     updated_content = re.sub(static_video_pattern, replace_static_video_src, content)
-    updated_content = re.sub(azure_video_pattern, replace_azure_video_src, updated_content)
-    updated_content = re.sub(shortcode_pattern, replace_shortcode, updated_content)
+    updated_content = re.sub(azure_video_pattern, replace_azure_video_src, content)
+    updated_content = re.sub(shortcode_pattern, replace_shortcode, content)
     
     return updated_content
 
@@ -226,8 +361,9 @@ def get_posts():
                 # Clean up Ghost CMS specific content
                 body = body.replace("__GHOST_URL__", "")
                 
-                # Replace Azure video shortcodes and links BEFORE markdown processing
+                # Replace Azure video and audio shortcodes and links BEFORE markdown processing
                 body = replace_video_links_with_azure(body)
+                body = replace_audio_links_with_azure(body)
                 
                 # Extract summary from caption or first few sentences
                 summary_text = ""
@@ -372,10 +508,46 @@ async def video_detail(request: Request, video_name: str):
         }
     )
 
+@app.get("/audios")
+async def audios(request: Request):
+    """Display all available audios from Azure Storage"""
+    audio_list = list_azure_audios()
+    return templates.TemplateResponse(
+        "audios.html",
+        {
+            "request": request, 
+            "audios": audio_list, 
+            "current_year": datetime.now().year
+        }
+    )
+
+@app.get("/audios/{audio_name}")
+async def audio_detail(request: Request, audio_name: str):
+    """Display a specific audio"""
+    audio = get_audio_by_name(audio_name)
+    if not audio:
+        return templates.TemplateResponse(
+            "404.html",
+            {"request": request, "current_year": datetime.now().year}
+        )
+    return templates.TemplateResponse(
+        "audio_detail.html",
+        {
+            "request": request, 
+            "audio": audio, 
+            "current_year": datetime.now().year
+        }
+    )
+
 @app.get("/api/videos")
 async def api_videos():
     """API endpoint to get video list as JSON"""
     return {"videos": list_azure_videos()}
+
+@app.get("/api/audios")
+async def api_audios():
+    """API endpoint to get audio list as JSON"""
+    return {"audios": list_azure_audios()}
 
 # Add a custom Jinja2 filter for date formatting
 def format_date(value):
