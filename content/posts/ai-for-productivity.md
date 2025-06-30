@@ -1,6 +1,6 @@
 title: AI For productivity
 date: 2024-06-10
-slug: ai-for-priductivity
+slug: ai-for-productivity
 feature_image: /static/images/DigitalIQ.png
 
 <figure class="kg-card kg-embed-card">
