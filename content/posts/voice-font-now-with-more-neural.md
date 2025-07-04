@@ -1,7 +1,7 @@
 title: Voice Font - Now With More Neural
 date: 2023-06-13
 slug: voice-font-now-with-more-neural
-feature_image: /static/images/voice-font.png
+feature_image: /static/images/fergus-rory.jpeg
 
 <p>One exciting thing I worked on very early on was creating my own custom voice font with Microsoft's custom voice font to enable text to speech. In the years since we have seen some amazing advancements in neural text to speech which give a much better output.<br><br>When I found out neural custom voices were available I couldn't resist trying one out. I was eager to see how accurate and natural the results would be compared to my previous attempts, which although recognisable, were not quite there.<br><br>For those who are unfamiliar, Microsoft Neural TTS is a cloud-based service that aims to provide highly realistic and expressive speech synthesis using deep neural networks. Voice Fonts, on the other hand, allow users to create custom voices by training the TTS engine on their own voice recordings.<br><br>To begin my experiment, I signed up for the Microsoft Azure Cognitive Services and followed the provided guidelines for recording my 50 utterances. The process was relatively straightforward, with clear instructions on how to maintain consistent pitch, tone, and pacing throughout the recordings. These are recorded right in the portal, which is super easy. I did use a much better quality microphone than my attempts several years ago. The training is pretty quick, but to use the font you need to record a short statement that you agree to have your voice replicated. <br>The moment of truth arrived as I typed a sample text into the Neural TTS interface and selected my custom voice. Listen to the results yourself:
 
