@@ -7,13 +7,23 @@
     <title>{% block title %}Fergus Kidd - R&D Engineering Lead & Microsoft MVP{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/particles.css">
     <style>
         :root {
             --steel-blue: #4682b4;
         }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
+        
+        /* Enhanced color variables */
         .bg-steel-blue {
             background-color: var(--steel-blue);
         }
@@ -23,38 +33,211 @@
         .hover\:text-steel-blue:hover {
             color: var(--steel-blue);
         }
+        
+        /* Enhanced link styling */
         a {
-            color: #0366d6; /* GitHub blue */
+            color: #0366d6;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
         a:hover {
-            text-decoration: underline;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+        
+        /* Navigation animations */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: var(--steel-blue);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Card hover effects */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Fade in animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Stagger animation for cards */
+        .stagger-animation {
+            animation: staggerFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @keyframes staggerFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Loading animation */
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        /* Smooth page transitions */
+        .page-transition {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        /* Enhanced button styles */
+        .btn-modern {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+        
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--steel-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Enhanced navigation */
+        .nav-container {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Logo animation */
+        .logo-hover {
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-hover:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Footer enhancement */
+        .footer-enhancement {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <nav class="bg-white shadow-md">
+<body class="min-h-screen morph-bg">
+    <!-- Particle Background -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-container shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="/">
+                    <a href="/" class="logo-hover">
                         <img src="/static/images/logo.png" alt="Logo" class="h-8 w-auto">
                     </a>
                 </div>
                 <div class="hidden sm:flex sm:space-x-8 items-center">
-                    <a href="/" class="text-2xl font-bold text-steel-blue">
+                    <a href="/" class="nav-link text-2xl font-bold text-steel-blue">
                         Home
                     </a>
-                    <a href="/about" class="text-2xl font-bold text-steel-blue">
+                    <a href="/about" class="nav-link text-2xl font-bold text-steel-blue">
                         About
                     </a>
-                    <!-- <a href="/talk" class="text-2xl font-bold text-steel-blue">
+                    <!-- <a href="/talk" class="nav-link text-2xl font-bold text-steel-blue">
                         Talk to Fergus
                     </a> -->
-                    <a href="https://www.linkedin.com/in/fergus-kidd-1a222667/" class="text-2xl font-bold text-steel-blue">
+                    <a href="https://www.linkedin.com/in/fergus-kidd-1a222667/" class="nav-link text-2xl font-bold text-steel-blue">
                         LinkedIn
                     </a>
-                    <a href="https://github.com/FergusKidd" class="text-2xl font-bold text-steel-blue">
+                    <a href="https://github.com/FergusKidd" class="nav-link text-2xl font-bold text-steel-blue">
                         GitHub
                     </a>
                 </div>
@@ -62,16 +245,111 @@
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-8">
+    <!-- Main content with fade in -->
+    <main class="container mx-auto px-4 py-8 fade-in">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-white shadow-lg mt-8">
+    <!-- Enhanced footer -->
+    <footer class="footer-enhancement shadow-lg mt-8">
         <div class="container mx-auto px-4 py-6">
             <p class="text-center text-gray-500">&copy; {{ current_year }} Fergus Kidd. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Scroll to top button -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </div>
+
     <script src="/static/js/main.js"></script>
+    
+    <!-- Enhanced JavaScript -->
+    <script>
+        // Scroll to top functionality
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Stagger animation for cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.animationDelay = `${index * 0.1}s`;
+                        entry.target.classList.add('stagger-animation');
+                    }, 100);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('article, .card-hover');
+            cards.forEach(card => observer.observe(card));
+        });
+        
+        // Smooth page transitions
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('page-transition');
+        });
+        
+        // Enhanced link hover effects
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Loading animation for dynamic content
+        function showLoading(element) {
+            element.innerHTML = '<span class="loading-dots">Loading</span>';
+        }
+        
+        // Parallax effect for hero sections
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax');
+            
+            parallaxElements.forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+        
+        // Add floating animation to random elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('h1, h2, .card-hover');
+            elements.forEach((element, index) => {
+                if (index % 3 === 0) {
+                    element.classList.add('floating');
+                }
+            });
+        });
+    </script>
 </body>
 </html> 

@@ -1,0 +1,243 @@
+/* Particle Background Effect */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    background: linear-gradient(45deg, rgba(70, 130, 180, 0.1), rgba(90, 155, 212, 0.1));
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.particle:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 8s;
+}
+
+.particle:nth-child(2) {
+    width: 120px;
+    height: 120px;
+    top: 60%;
+    left: 80%;
+    animation-delay: 2s;
+    animation-duration: 10s;
+}
+
+.particle:nth-child(3) {
+    width: 60px;
+    height: 60px;
+    top: 80%;
+    left: 20%;
+    animation-delay: 4s;
+    animation-duration: 7s;
+}
+
+.particle:nth-child(4) {
+    width: 100px;
+    height: 100px;
+    top: 10%;
+    left: 70%;
+    animation-delay: 1s;
+    animation-duration: 9s;
+}
+
+.particle:nth-child(5) {
+    width: 40px;
+    height: 40px;
+    top: 40%;
+    left: 50%;
+    animation-delay: 3s;
+    animation-duration: 6s;
+}
+
+.particle:nth-child(6) {
+    width: 90px;
+    height: 90px;
+    top: 70%;
+    left: 30%;
+    animation-delay: 5s;
+    animation-duration: 11s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.3;
+    }
+    25% {
+        transform: translateY(-20px) rotate(90deg);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-40px) rotate(180deg);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translateY(-20px) rotate(270deg);
+        opacity: 0.6;
+    }
+}
+
+/* Floating elements animation */
+.floating {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Gradient text animation */
+.gradient-text {
+    background: linear-gradient(-45deg, #4682b4, #5a9bd4, #4682b4, #5a9bd4);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Glow effect */
+.glow {
+    box-shadow: 0 0 20px rgba(70, 130, 180, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+.glow:hover {
+    box-shadow: 0 0 30px rgba(70, 130, 180, 0.5);
+}
+
+/* Typewriter effect */
+.typewriter {
+    overflow: hidden;
+    border-right: 2px solid var(--steel-blue);
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--steel-blue); }
+}
+
+/* Pulse animation */
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Bounce animation */
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -30px, 0);
+    }
+    70% {
+        transform: translate3d(0, -15px, 0);
+    }
+    90% {
+        transform: translate3d(0, -4px, 0);
+    }
+}
+
+/* Shimmer effect */
+.shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.shimmer:hover::before {
+    left: 100%;
+}
+
+/* Morphing background */
+.morph-bg {
+    background: linear-gradient(-45deg, #f8fafc, #e2e8f0, #f1f5f9, #e2e8f0);
+    background-size: 400% 400%;
+    animation: morph 15s ease infinite;
+}
+
+@keyframes morph {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Responsive particles */
+@media (max-width: 768px) {
+    .particle {
+        display: none;
+    }
+    
+    .particle:nth-child(1),
+    .particle:nth-child(3) {
+        display: block;
+        width: 40px;
+        height: 40px;
+    }
+} 
