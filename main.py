@@ -422,7 +422,7 @@ def get_posts():
                     html_content = markdown2.markdown(
                         body,
                         extras=["html-classes", "html"],
-                        safe_mode="escape"
+                        safe_mode=None
                     )
                 else:
                     html_content = body
