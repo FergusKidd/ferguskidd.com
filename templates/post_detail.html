@@ -3,23 +3,23 @@
 {% block title %}{{ post.title }} | Fergus Kidd{% endblock %}
 
 {% block content %}
-<article class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8 fade-in">
+<article class="max-w-4xl mx-auto bg-main-bg rounded-lg shadow-lg p-8 fade-in">
     <!-- Header Section -->
     <header class="mb-8">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4 leading-tight">{{ post.title }}</h1>
-        <div class="flex items-center text-gray-600 mb-6">
+        <h1 class="text-4xl font-bold text-main-fg mb-4 leading-tight">{{ post.title }}</h1>
+        <div class="flex items-center text-main-fg opacity-70 mb-6">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
             <span class="font-medium">{{ post.date_posted.strftime('%B %d, %Y') }}</span>
             {% if post.category %}
-            <span class="mx-3 text-gray-400">•</span>
-            <span class="text-steel-blue font-semibold bg-blue-50 px-3 py-1 rounded-full text-sm">{{ post.category }}</span>
+            <span class="mx-3 text-main-fg opacity-50">•</span>
+            <span class="text-steel-blue font-semibold bg-main-bg px-3 py-1 rounded-full text-sm">{{ post.category }}</span>
             {% endif %}
         </div>
         
         <!-- Reading time estimate -->
-        <div class="flex items-center text-sm text-gray-500 mb-4">
+        <div class="flex items-center text-sm text-main-fg opacity-60 mb-4">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
@@ -34,8 +34,8 @@
 
     <!-- Tags Section -->
     {% if post.tags %}
-    <div class="mt-8 pt-6 border-t border-gray-200">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">Tags:</h3>
+    <div class="mt-8 pt-6 border-t border-main-fg opacity-20">
+        <h3 class="text-lg font-semibold text-main-fg mb-3">Tags:</h3>
         <div class="flex flex-wrap">
             {% for tag in post.tags.split(',') %}
             <span class="inline-block bg-gradient-to-r from-steel-blue to-blue-600 text-white rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-2 transform transition-all duration-300 hover:scale-105 hover:shadow-md">
@@ -47,7 +47,7 @@
     {% endif %}
 
     <!-- Navigation -->
-    <div class="mt-8 pt-6 border-t border-gray-200">
+    <div class="mt-8 pt-6 border-t border-main-fg opacity-20">
         <a href="/" class="btn-modern inline-flex items-center text-steel-blue hover:text-blue-800 font-medium transition-all duration-300">
             <svg class="w-5 h-5 mr-2 transform transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>

@@ -11,6 +11,11 @@
     <style>
         :root {
             --steel-blue: #4682b4;
+            --background: #f8fafc;
+            --foreground: #1f2937;
+            --link: #0366d6;
+            --card-bg: #fff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
         }
         
         /* Smooth scrolling */
@@ -19,7 +24,7 @@
         }
         
         body {
-            background-color: #f8fafc;
+            color: var(--foreground);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
@@ -36,7 +41,7 @@
         
         /* Enhanced link styling */
         a {
-            color: #0366d6;
+            color: var(--link);
             text-decoration: none;
             transition: all 0.3s ease;
         }
@@ -70,6 +75,8 @@
         /* Card hover effects */
         .card-hover {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 25px -5px var(--card-shadow), 0 10px 10px -5px var(--card-shadow);
+            background: var(--card-bg);
         }
         
         .card-hover:hover {
@@ -202,6 +209,32 @@
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
+        /* Dark mode overrides */
+        .dark-mode {
+            --background: #181a1b;
+            --foreground: #f3f4f6;
+            --link: #5a9bd4;
+            --card-bg: #23272a;
+            --card-shadow: rgba(70, 130, 180, 0.15);
+        }
+        /* High contrast mode overrides */
+        .high-contrast {
+            --background: #000 !important;
+            --foreground: #fff !important;
+            --link: #ffff00 !important;
+            --card-bg: #000 !important;
+            --card-shadow: #fff !important;
+            outline: 3px solid #ffff00 !important;
+        }
+        .high-contrast .text-steel-blue,
+        .high-contrast .hover\:text-steel-blue:hover {
+            color: #ffff00 !important;
+        }
+        .bg-main-bg { background-color: var(--background) !important; }
+        .text-main-fg { color: var(--foreground) !important; }
+        .container, .max-w-7xl, .max-w-4xl, .max-w-6xl, .max-w-3xl, .mx-auto {
+            background: transparent !important;
+        }
     </style>
 </head>
 <body class="min-h-screen morph-bg">
@@ -216,7 +249,7 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="nav-container shadow-md sticky top-0 z-50">
+    <nav class="nav-container shadow-md sticky top-0 z-50 bg-main-bg text-main-fg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex-shrink-0 flex items-center">
@@ -240,6 +273,17 @@
                     <a href="https://github.com/FergusKidd" class="nav-link text-2xl font-bold text-steel-blue">
                         GitHub
                     </a>
+                    <!-- Theme toggles -->
+                    <button id="toggle-dark" class="ml-4 p-2 rounded-full bg-transparent hover:bg-steel-blue hover:bg-opacity-10 text-steel-blue transition-all duration-300" title="Toggle Dark Mode">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <button id="toggle-contrast" class="ml-2 p-2 rounded-full bg-transparent hover:bg-yellow-400 hover:bg-opacity-10 text-yellow-600 transition-all duration-300" title="High Contrast Mode">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -251,7 +295,7 @@
     </main>
 
     <!-- Enhanced footer -->
-    <footer class="footer-enhancement shadow-lg mt-8">
+    <footer class="footer-enhancement shadow-lg mt-8 bg-main-bg text-main-fg">
         <div class="container mx-auto px-4 py-6">
             <p class="text-center text-gray-500">&copy; {{ current_year }} Fergus Kidd. All rights reserved.</p>
         </div>
@@ -350,6 +394,56 @@
                 }
             });
         });
+
+        // === THEME TOGGLING ===
+        const body = document.body;
+        const darkBtn = document.getElementById('toggle-dark');
+        const contrastBtn = document.getElementById('toggle-contrast');
+
+        function setMode(mode) {
+            body.classList.remove('dark-mode', 'high-contrast');
+            if (mode === 'dark') {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme-mode', 'dark');
+            } else if (mode === 'contrast') {
+                body.classList.add('high-contrast');
+                localStorage.setItem('theme-mode', 'contrast');
+            } else {
+                localStorage.setItem('theme-mode', 'light');
+            }
+        }
+
+        darkBtn.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                setMode('light');
+            } else {
+                setMode('dark');
+            }
+        });
+        contrastBtn.addEventListener('click', () => {
+            if (body.classList.contains('high-contrast')) {
+                setMode('light');
+            } else {
+                setMode('contrast');
+            }
+        });
+
+        // On page load: set mode from localStorage or system preference
+        (function() {
+            const saved = localStorage.getItem('theme-mode');
+            if (saved === 'dark') {
+                setMode('dark');
+            } else if (saved === 'contrast') {
+                setMode('contrast');
+            } else {
+                // System preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    setMode('dark');
+                } else {
+                    setMode('light');
+                }
+            }
+        })();
     </script>
 </body>
 </html> 

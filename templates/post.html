@@ -3,16 +3,16 @@
 {% block title %}{{ post.title }} | Fergus Kidd{% endblock %}
 
 {% block content %}
-<article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+<article class="max-w-4xl mx-auto card-hover rounded-lg shadow-md overflow-hidden">
     {% if post.feature_image %}
-    <div class="w-full h-64 md:h-80 bg-gray-200">
+    <div class="w-full h-64 md:h-80 bg-main-bg">
         <img src="{{ post.feature_image }}" alt="{{ post.title }}" class="w-full h-full object-cover">
     </div>
     {% endif %}
     
     <div class="p-8">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
-        <div class="text-gray-600 mb-6">
+        <h1 class="text-4xl font-bold text-main-fg mb-4">{{ post.title }}</h1>
+        <div class="text-main-fg opacity-70 mb-6">
             <span>{{ post.date | format_date }}</span>
             {% if post.category %}
             <span class="mx-2">•</span>
@@ -25,7 +25,7 @@
         {% if post.tags %}
         <div class="mt-4">
             {% for tag in post.tags.split(',') %}
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+            <span class="inline-block bg-main-bg rounded-full px-3 py-1 text-sm font-semibold text-main-fg mr-2 mb-2 border border-main-fg">
                 #{{ tag.strip() }}
             </span>
             {% endfor %}

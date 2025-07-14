@@ -15,18 +15,18 @@
         {% for post in posts %}
             {% set post_year = post.date.split('-')[0] | int %}
             {% if post_year >= 2023 %}
-            <article class="card-hover bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:scale-105">
+            <article class="card-hover rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:scale-105">
                 {% if post.feature_image %}
-                <div class="h-48 bg-gray-200 overflow-hidden">
+                <div class="h-48 bg-main-bg overflow-hidden">
                     <img src="{{ post.feature_image }}" alt="{{ post.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                 </div>
                 {% endif %}
                 
                 <div class="p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                    <h3 class="text-xl font-semibold text-main-fg mb-2 line-clamp-2">
                         <a href="/posts/{{ post.slug }}" class="hover:text-steel-blue transition-colors duration-300">{{ post.title }}</a>
                     </h3>
-                    <div class="text-gray-600 mb-3 text-sm flex items-center">
+                    <div class="text-main-fg opacity-70 mb-3 text-sm flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
@@ -36,7 +36,7 @@
                         <span class="text-steel-blue font-medium">{{ post.category }}</span>
                         {% endif %}
                     </div>
-                    <div class="text-gray-700 mb-4 text-sm line-clamp-3">
+                    <div class="text-main-fg opacity-80 mb-4 text-sm line-clamp-3">
                         {% if post.summary %}
                             {{ post.summary }}
                         {% else %}
@@ -83,18 +83,18 @@
         {% for post in posts %}
             {% set post_year = post.date.split('-')[0] | int %}
             {% if post_year <= 2022 %}
-            <article class="card-hover bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:scale-105">
+            <article class="card-hover rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:scale-105">
                 {% if post.feature_image %}
-                <div class="h-48 bg-gray-200 overflow-hidden">
+                <div class="h-48 bg-main-bg overflow-hidden">
                     <img src="{{ post.feature_image }}" alt="{{ post.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                 </div>
                 {% endif %}
                 
                 <div class="p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                    <h3 class="text-xl font-semibold text-main-fg mb-2 line-clamp-2">
                         <a href="/posts/{{ post.slug }}" class="hover:text-steel-blue transition-colors duration-300">{{ post.title }}</a>
                     </h3>
-                    <div class="text-gray-600 mb-3 text-sm flex items-center">
+                    <div class="text-main-fg opacity-70 mb-3 text-sm flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
@@ -104,7 +104,7 @@
                         <span class="text-steel-blue font-medium">{{ post.category }}</span>
                         {% endif %}
                     </div>
-                    <div class="text-gray-700 mb-4 text-sm line-clamp-3">
+                    <div class="text-main-fg opacity-80 mb-4 text-sm line-clamp-3">
                         {% if post.summary %}
                             {{ post.summary }}
                         {% else %}

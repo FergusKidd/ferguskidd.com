@@ -10,13 +10,44 @@
     overflow: hidden;
 }
 
+:root {
+    --morph1: #f8fafc;
+    --morph2: #e2e8f0;
+    --morph3: #f1f5f9;
+    --morph4: #e2e8f0;
+    --particle1: rgba(70, 130, 180, 0.3);
+    --particle2: rgba(90, 155, 212, 0.4);
+    --particle-border: rgba(70, 130, 180, 0.2);
+    --particle-shadow: rgba(70, 130, 180, 0.2);
+}
+.dark-mode {
+    --morph1: #181a1b;
+    --morph2: #23272a;
+    --morph3: #23272a;
+    --morph4: #181a1b;
+    --particle1: rgba(90, 155, 212, 0.25);
+    --particle2: rgba(70, 130, 180, 0.35);
+    --particle-border: rgba(90, 155, 212, 0.25);
+    --particle-shadow: rgba(90, 155, 212, 0.15);
+}
+.high-contrast {
+    --morph1: #000;
+    --morph2: #222;
+    --morph3: #000;
+    --morph4: #222;
+    --particle1: rgba(255,255,0,0.5);
+    --particle2: rgba(255,255,0,0.7);
+    --particle-border: rgba(255,255,0,0.7);
+    --particle-shadow: rgba(255,255,0,0.3);
+}
+
 .particle {
     position: absolute;
-    background: linear-gradient(45deg, rgba(70, 130, 180, 0.3), rgba(90, 155, 212, 0.4));
-    border: 2px solid rgba(70, 130, 180, 0.2);
+    background: linear-gradient(45deg, var(--particle1), var(--particle2));
+    border: 2px solid var(--particle-border);
     border-radius: 50%;
     animation: float 6s ease-in-out infinite;
-    box-shadow: 0 0 15px rgba(70, 130, 180, 0.2);
+    box-shadow: 0 0 15px var(--particle-shadow);
 }
 
 .particle:nth-child(1) {
@@ -213,9 +244,18 @@
 
 /* Morphing background */
 .morph-bg {
-    background: linear-gradient(-45deg, #f8fafc, #e2e8f0, #f1f5f9, #e2e8f0);
-    background-size: 400% 400%;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, var(--morph1) 0%, var(--morph2) 30%, var(--morph3) 70%, var(--morph4) 100%);
+    background-size: 200% 200%;
     animation: morph 15s ease infinite;
+}
+
+.nav-container {
+    background: transparent !important;
+}
+
+.footer-enhancement {
+    background: transparent !important;
 }
 
 @keyframes morph {
