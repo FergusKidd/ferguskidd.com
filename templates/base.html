@@ -251,8 +251,8 @@
     <!-- Navigation -->
     <nav class="nav-container shadow-md sticky top-0 z-50 bg-main-bg text-main-fg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex-shrink-0 flex items-center">
+            <div class="flex justify-center h-16 relative">
+                <div class="flex-shrink-0 flex items-center absolute left-0">
                     <a href="/" class="logo-hover">
                         <img src="/static/images/logo.png" alt="Logo" class="h-8 w-auto">
                     </a>
@@ -273,8 +273,10 @@
                     <a href="https://github.com/FergusKidd" class="nav-link text-2xl font-bold text-steel-blue">
                         GitHub
                     </a>
-                    <!-- Theme toggles -->
-                    <button id="toggle-dark" class="ml-4 p-2 rounded-full bg-transparent hover:bg-steel-blue hover:bg-opacity-10 text-steel-blue transition-all duration-300" title="Toggle Dark Mode">
+                </div>
+                <!-- Theme toggles -->
+                <div class="flex items-center absolute right-0">
+                    <button id="toggle-dark" class="p-2 rounded-full bg-transparent hover:bg-steel-blue hover:bg-opacity-10 text-steel-blue transition-all duration-300" title="Toggle Dark Mode">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
