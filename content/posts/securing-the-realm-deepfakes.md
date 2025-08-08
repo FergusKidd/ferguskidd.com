@@ -2,7 +2,7 @@
 title: Securing the Realm - Deepfakes
 date: 2025-08-08
 slug: securing-the-realm-deepfakes
-summary: Joined by Josh McDonald and Chris Lloyd-Jones from the MVP community to talk about deepfakes and shallow fakes, highlighting some potential issues.
+summary: I joined Josh McDonald and Chris Lloyd-Jones from the MVP community to talk about deepfakes and shallow fakes, highlighting some potential issues.
 feature_image: /static/images/secure_realm.jpg
 ---
 
