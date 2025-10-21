@@ -1,14 +1,18 @@
----
 title: Building the Future of Learning - EU Code Week 2024
-date: 2024-10-21
+date: 2025-10-21
 slug: eu-code-week-ai-education
 summary: Live at EU Code Week, participants built and deployed a complete website in real-time—no coding experience required. This hands-on demonstration showcased how AI is fundamentally transforming education from a productivity tool into a genuine learning partner.
 feature_image: /static/images/Code_Week/Screenshot 2025-10-21 at 11.44.03.png
----
 
 <p>We're living through a fundamental shift in how knowledge is created, accessed, and shared. Artificial Intelligence isn't simply another educational technology to be bolted onto existing systems—it represents a paradigm shift in how we approach learning itself.</p>
 
 <p>During EU Code Week, I had the privilege of leading an interactive workshop that put this transformation into practice. The challenge: guide participants with zero technical background through building a complete, functional website and deploying it live to the internet—all within a single session.</p>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; border-radius: 12px; margin: 24px 0; text-align: center;">
+    <h3 style="color: white; margin-top: 0; font-size: 1.3em;">🚀 Explore the Workshop Project</h3>
+    <p style="color: rgba(255,255,255,0.95); margin-bottom: 16px; font-size: 1.05em;">Want to try building the triangle calculator yourself? All the code and materials from the workshop are freely available:</p>
+    <a href="https://github.com/FergusKidd/EU_code_week_website_example" style="display: inline-block; background: white; color: #667eea; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">View on GitHub →</a>
+</div>
 
 <figure class="kg-card kg-image-card">
     <img src="/static/images/Code_Week/Screenshot 2025-10-21 at 11.44.03.png" class="kg-image" alt="EU Code Week workshop demonstration" />
@@ -44,6 +48,30 @@ feature_image: /static/images/Code_Week/Screenshot 2025-10-21 at 11.44.03.png
 <li>Confidence that the technology gap isn't as wide as it appears</li>
 <li>A new mental model for thinking about AI as a collaborative partner</li>
 </ul>
+
+<h2>Resources for Getting Started</h2>
+
+<p>Inspired to explore AI and coding with your students? Here are some excellent resources to get started:</p>
+
+<div style="display: grid; gap: 20px; margin: 24px 0;">
+    <div style="border-left: 4px solid #667eea; padding: 16px 20px; background: rgba(102, 126, 234, 0.05); border-radius: 8px;">
+        <h3 style="margin-top: 0; color: #667eea;">💳 Free Azure Credits for Students</h3>
+        <p>Students can get USD100 in free Azure credits to build cloud applications, deploy AI models, and experiment with cutting-edge technology—no credit card required.</p>
+        <a href="https://azure.microsoft.com/en-gb/free/students?WT.mc_id=MVP_416203" style="color: #667eea; font-weight: bold; text-decoration: none;">Get your free Azure credits →</a>
+    </div>
+    
+    <div style="border-left: 4px solid #764ba2; padding: 16px 20px; background: rgba(118, 75, 162, 0.05); border-radius: 8px;">
+        <h3 style="margin-top: 0; color: #764ba2;">🎓 Fun AI Activities for Students</h3>
+        <p>A comprehensive guide to engaging, hands-on AI activities that make machine learning concepts accessible and exciting for learners of all ages.</p>
+        <a href="https://plusai.com/blog/fun-ai-activities-for-students#toc-h2-0" style="color: #764ba2; font-weight: bold; text-decoration: none;">Explore AI activities →</a>
+    </div>
+    
+    <div style="border-left: 4px solid #f093fb; padding: 16px 20px; background: rgba(240, 147, 251, 0.05); border-radius: 8px;">
+        <h3 style="margin-top: 0; color: #c94cf0;">🎨 Google's Quick, Draw!</h3>
+        <p>Experience neural networks firsthand in this fun, interactive game where an AI tries to guess what you're drawing. A perfect introduction to how machines learn to recognize patterns.</p>
+        <a href="https://quickdraw.withgoogle.com/" style="color: #c94cf0; font-weight: bold; text-decoration: none;">Play Quick, Draw! →</a>
+    </div>
+</div>
 
 <h2>Looking Forward</h2>
 
