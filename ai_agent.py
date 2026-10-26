@@ -557,7 +557,6 @@ async def chat(request: Request):
     prior = history + [{"role": "user", "content": message}]
     api_messages = [{"role": "system", "content": system_prompt()}] + prior
 
-    temperature = os.getenv("AI_TEMPERATURE", "0.7").strip()
     try:
         max_tokens = int(os.getenv("AI_MAX_TOKENS", "1500"))
     except ValueError:
@@ -566,8 +565,11 @@ async def chat(request: Request):
         "model": model_name,
         "messages": api_messages,
         "stream": True,
-        "max_tokens": max(1, min(max_tokens, 4096)),
+        "max_completion_tokens": max(1, min(max_tokens, 4096)),
     }
+    # Newer deployments reject every temperature except the model default.
+    # Set AI_TEMPERATURE only for a deployment that accepts it.
+    temperature = os.getenv("AI_TEMPERATURE", "").strip()
     if temperature:
         try:
             kwargs["temperature"] = float(temperature)
