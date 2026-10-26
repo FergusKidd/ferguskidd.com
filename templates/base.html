@@ -3,461 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090b">
     <link rel="icon" href="/static/images/logo.png" type="image/png">
-    <title>{% block title %}Fergus Kidd - R&D Engineering Lead & Microsoft MVP{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/particles.css">
-    <style>
-        :root {
-            --steel-blue: #4682b4;
-            --background: #f8fafc;
-            --foreground: #1f2937;
-            --link: #0366d6;
-            --card-bg: #fff;
-            --card-shadow: rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            color: var(--foreground);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        /* Enhanced color variables */
-        .bg-steel-blue {
-            background-color: var(--steel-blue);
-        }
-        .text-steel-blue {
-            color: var(--steel-blue);
-        }
-        .hover\:text-steel-blue:hover {
-            color: var(--steel-blue);
-        }
-        
-        /* Enhanced link styling */
-        a {
-            color: var(--link);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        a:hover {
-            text-decoration: none;
-            transform: translateY(-1px);
-        }
-        
-        /* Navigation animations */
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            background-color: var(--steel-blue);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        /* Card hover effects */
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 25px -5px var(--card-shadow), 0 10px 10px -5px var(--card-shadow);
-            background: var(--card-bg);
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        /* Fade in animation */
-        .fade-in {
-            animation: fadeIn 0.8s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Stagger animation for cards */
-        .stagger-animation {
-            animation: staggerFadeIn 0.6s ease-out forwards;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        @keyframes staggerFadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Loading animation */
-        .loading-dots {
-            display: inline-block;
-        }
-        
-        .loading-dots::after {
-            content: '';
-            animation: dots 1.5s steps(5, end) infinite;
-        }
-        
-        @keyframes dots {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
-        }
-        
-        /* Smooth page transitions */
-        .page-transition {
-            transition: opacity 0.3s ease-in-out;
-        }
-        
-        /* Enhanced button styles */
-        .btn-modern {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-modern::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn-modern:hover::before {
-            left: 100%;
-        }
-        
-        /* Scroll to top button */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--steel-blue);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .scroll-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .scroll-to-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        /* Enhanced navigation */
-        .nav-container {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Logo animation */
-        .logo-hover {
-            transition: transform 0.3s ease;
-        }
-        
-        .logo-hover:hover {
-            transform: scale(1.05);
-        }
-        
-        /* Footer enhancement */
-        .footer-enhancement {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        /* Dark mode overrides */
-        .dark-mode {
-            --background: #181a1b;
-            --foreground: #f3f4f6;
-            --link: #5a9bd4;
-            --card-bg: #23272a;
-            --card-shadow: rgba(70, 130, 180, 0.15);
-        }
-        /* High contrast mode overrides */
-        .high-contrast {
-            --background: #000 !important;
-            --foreground: #fff !important;
-            --link: #ffff00 !important;
-            --card-bg: #000 !important;
-            --card-shadow: #fff !important;
-            outline: 3px solid #ffff00 !important;
-        }
-        .high-contrast .text-steel-blue,
-        .high-contrast .hover\:text-steel-blue:hover {
-            color: #ffff00 !important;
-        }
-        .bg-main-bg { background-color: var(--background) !important; }
-        .text-main-fg { color: var(--foreground) !important; }
-    </style>
+    <title>{% block title %}Fergus Kidd{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/site.css">
+    <script src="/static/js/theme.js"></script>
+    {% block head %}{% endblock %}
 </head>
-<body class="min-h-screen morph-bg">
-    <!-- Particle Background -->
-    <div class="particles-container">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="nav-container shadow-md sticky top-0 z-50 bg-main-bg text-main-fg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-center h-16 relative">
-                <div class="flex-shrink-0 flex items-center absolute left-0">
-                    <a href="/" class="logo-hover">
-                        <img src="/static/images/logo.png" alt="Logo" class="h-16 w-auto">
-                    </a>
-                </div>
-                
-                <!-- Mobile LinkedIn Button - Only visible on mobile -->
-                <div class="sm:hidden flex items-center">
-                    <a href="https://www.linkedin.com/in/fergus-kidd-1a222667/" 
-                       class="bg-steel-blue text-white px-4 py-2 rounded-lg font-semibold flex items-center space-x-2 hover:bg-opacity-90 transition-all duration-300 btn-modern"
-                       target="_blank" rel="noopener noreferrer">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                        <span>LinkedIn</span>
-                    </a>
-                </div>
-                
-                <!-- Desktop Navigation - Hidden on mobile -->
-                <div class="hidden sm:flex sm:space-x-8 items-center">
-                    <a href="/" class="nav-link text-2xl font-bold text-steel-blue">
-                        Home
-                    </a>
-                    <a href="/about" class="nav-link text-2xl font-bold text-steel-blue">
-                        About
-                    </a>
-                    <a href="/talk" class="nav-link text-2xl font-bold text-steel-blue">
-                        Talk to Fergus
-                    </a>
-                    <a href="https://www.linkedin.com/in/fergus-kidd-1a222667/" class="nav-link text-2xl font-bold text-steel-blue">
-                        LinkedIn
-                    </a>
-                    <a href="https://github.com/FergusKidd" class="nav-link text-2xl font-bold text-steel-blue">
-                        GitHub
-                    </a>
-                </div>
-                
-                <!-- Theme toggles -->
-                <div class="flex items-center absolute right-0">
-                    <button id="toggle-dark" class="p-2 rounded-full bg-transparent hover:bg-steel-blue hover:bg-opacity-10 text-steel-blue transition-all duration-300" title="Toggle Dark Mode">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                        </svg>
-                    </button>
-                    <button id="toggle-contrast" class="ml-2 p-2 rounded-full bg-transparent hover:bg-yellow-400 hover:bg-opacity-10 text-yellow-600 transition-all duration-300" title="High Contrast Mode">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+<body class="{% block body_class %}{% endblock %}">
+    <a class="skip" href="#content">Skip to content</a>
+    <header class="nav" id="nav">
+        <a class="brand" href="/">
+            <img src="/static/images/logo.png" alt="" width="38" height="38">
+            <span>Fergus <em>Kidd</em></span>
+        </a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+        <nav class="nav-links" id="nav-links">
+            <a href="/" {% if request.url.path == "/" %}aria-current="page"{% endif %}>Home</a>
+            <a href="/about" {% if request.url.path == "/about" %}aria-current="page"{% endif %}>About</a>
+            <a href="/talk" {% if request.url.path == "/talk" %}aria-current="page"{% endif %}>Talk</a>
+            <a href="https://fieldpal.ai" target="_blank" rel="noopener noreferrer">FieldPal</a>
+            <a href="https://www.linkedin.com/in/fergus-kidd-1a222667/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://github.com/FergusKidd" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+        <div class="nav-tools">
+            <button id="toggle-dark" class="icon-btn" type="button" aria-label="Toggle color theme" aria-pressed="true">
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"></path>
+                </svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+                </svg>
+            </button>
+            <button id="toggle-contrast" class="icon-btn" type="button" aria-label="High contrast" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M13 2 3 14h8l-1 8 11-14h-8l0-6z"></path>
+                </svg>
+            </button>
         </div>
-    </nav>
+    </header>
 
-    <!-- Main content with fade in -->
-    <main class="container mx-auto px-4 py-8 fade-in">
+    <main id="content">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Enhanced footer -->
-    <footer class="footer-enhancement shadow-lg mt-8 bg-main-bg text-main-fg">
-        <div class="container mx-auto px-4 py-6">
-            <p class="text-center text-gray-500">&copy; {{ current_year }} Fergus Kidd. All rights reserved.</p>
-        </div>
+    <footer class="site-footer">
+        <p>&copy; {{ current_year }} Fergus Kidd</p>
     </footer>
 
-    <!-- Scroll to top button -->
-    <div class="scroll-to-top" id="scrollToTop">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-        </svg>
-    </div>
-
-    <script src="/static/js/main.js"></script>
-    
-    <!-- Enhanced JavaScript -->
-    <script>
-        // Scroll to top functionality
-        const scrollToTopBtn = document.getElementById('scrollToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollToTopBtn.classList.add('visible');
-            } else {
-                scrollToTopBtn.classList.remove('visible');
-            }
-        });
-        
-        scrollToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-        
-        // Stagger animation for cards
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.style.animationDelay = `${index * 0.1}s`;
-                        entry.target.classList.add('stagger-animation');
-                    }, 100);
-                }
-            });
-        }, observerOptions);
-        
-        // Observe all cards
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('article, .card-hover');
-            cards.forEach(card => observer.observe(card));
-        });
-        
-        // Smooth page transitions
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('page-transition');
-        });
-        
-        // Enhanced link hover effects
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-2px)';
-            });
-            
-            link.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-        
-        // Loading animation for dynamic content
-        function showLoading(element) {
-            element.innerHTML = '<span class="loading-dots">Loading</span>';
-        }
-        
-        // Parallax effect for hero sections
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.parallax');
-            
-            parallaxElements.forEach(element => {
-                const speed = element.dataset.speed || 0.5;
-                element.style.transform = `translateY(${scrolled * speed}px)`;
-            });
-        });
-        
-        // Add floating animation to random elements
-        document.addEventListener('DOMContentLoaded', () => {
-            const elements = document.querySelectorAll('h1, h2, .card-hover');
-            elements.forEach((element, index) => {
-                if (index % 3 === 0) {
-                    element.classList.add('floating');
-                }
-            });
-        });
-
-        // === THEME TOGGLING ===
-        const body = document.body;
-        const darkBtn = document.getElementById('toggle-dark');
-        const contrastBtn = document.getElementById('toggle-contrast');
-
-        function setMode(mode) {
-            body.classList.remove('dark-mode', 'high-contrast');
-            if (mode === 'dark') {
-                body.classList.add('dark-mode');
-                localStorage.setItem('theme-mode', 'dark');
-            } else if (mode === 'contrast') {
-                body.classList.add('high-contrast');
-                localStorage.setItem('theme-mode', 'contrast');
-            } else {
-                localStorage.setItem('theme-mode', 'light');
-            }
-        }
-
-        darkBtn.addEventListener('click', () => {
-            if (body.classList.contains('dark-mode')) {
-                setMode('light');
-            } else {
-                setMode('dark');
-            }
-        });
-        contrastBtn.addEventListener('click', () => {
-            if (body.classList.contains('high-contrast')) {
-                setMode('light');
-            } else {
-                setMode('contrast');
-            }
-        });
-
-        // On page load: set mode from localStorage or system preference
-        (function() {
-            const saved = localStorage.getItem('theme-mode');
-            if (saved === 'dark') {
-                setMode('dark');
-            } else if (saved === 'contrast') {
-                setMode('contrast');
-            } else {
-                // System preference
-                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    setMode('dark');
-                } else {
-                    setMode('light');
-                }
-            }
-        })();
-    </script>
+    <button class="to-top" id="to-top" type="button" aria-label="Back to top">↑</button>
+    <script src="/static/js/site.js" defer></script>
+    {% block scripts %}{% endblock %}
 </body>
-</html> 
+</html>

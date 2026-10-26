@@ -22,6 +22,7 @@ var/
 
 # Virtual Environment
 venv/
+.venv/
 ENV/
 
 # IDE
@@ -40,6 +41,9 @@ instance/
 
 # Environment variables
 .env
+
+# Private studio transcripts
+data/
 
 # OS
 .DS_Store

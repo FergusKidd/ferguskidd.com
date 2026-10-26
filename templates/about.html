@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 
+{% block title %}About | Fergus Kidd{% endblock %}
+
 {% block content %}
-<div class="max-w-3xl mx-auto">
-    <h1 class="text-4xl font-bold text-steel-blue mb-8">About Fergus</h1>
-    <div class="bg-main-bg rounded-lg shadow-md p-6 mb-6">
-        <div class="flex justify-center mb-6">
-            <img src="{{ url_for('static', path='images/Fergus.jpeg') }}" alt="Fergus Kidd" class="rounded-lg shadow-md w-1/2">
-        </div>
-        <p class="text-lg text-main-fg mb-6 text-justify">
-            Fergus has an academic background in physics and space science. At University College London, Fergus worked on computer vision systems for the ExoMars rover for its planned 2018 mission to Mars. Although sadly, to date, the rover still sits on Earth, this ignited a passion for AI and technology. Fergus has eight years of experience working in AI and has accolades, including a patent in synthetic vision data generation and an OpenUK award nomination for sustainability in software. Today Fergus is Avanade's Emerging Technology R&D Engineering lead. He works on developing assets and demonstrations around new and future technologies, focussing on innovative use cases to show the power of new technologies in the enterprise. Fergus is passionate about STEM education and works with students from school ages to postgraduate to inspire them in their academic journey and encourage the next generation of scientists and engineers.
-        </p>
+<p class="page-kicker">About</p>
+<h1 class="page-title">The long <em>version.</em></h1>
+<div class="about-layout">
+    <figure class="portrait">
+        <img src="/static/images/Fergus.jpeg" alt="Fergus Kidd">
+    </figure>
+    <div class="panel">
+        <p class="bio">Fergus has an academic background in physics and space science. At University College London he worked on computer vision systems for the ExoMars rover’s planned 2018 Mars mission. Although the rover has yet to launch, the project sparked his passion for AI and emerging technology.</p>
+        <p class="bio">Fergus has over 10 years of experience in AI and advanced emerging technologies, with accolades including a patent in synthetic vision data generation and an OpenUK award nomination for sustainability in software.</p>
+        <p class="bio">He is now Co-Founder and CTO of <a href="https://fieldpal.ai" target="_blank" rel="noopener noreferrer">FieldPAL.ai</a>, a frontline AI platform that helps field workers access information faster and capture structured data more efficiently using agentic and advanced AI across the Microsoft ecosystem. Fergus is also passionate about STEM education and regularly works with students from school age to postgraduate to inspire the next generation of scientists and engineers.</p>
     </div>
-    <div class="w-full flex justify-center items-center my-8">
-        <div class="flex justify-center items-center" data-iframe-width="300" data-iframe-height="270" data-share-badge-id="d452446e-2ea0-4d42-a8e8-a406f24f055d" data-share-badge-host="https://www.credly.com"></div>
-    </div>
-    <script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
 </div>
-{% endblock %} 
+<div class="badge-row">
+    <div data-iframe-width="300" data-iframe-height="270" data-share-badge-id="d452446e-2ea0-4d42-a8e8-a406f24f055d" data-share-badge-host="https://www.credly.com"></div>
+</div>
+<script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
+{% endblock %}

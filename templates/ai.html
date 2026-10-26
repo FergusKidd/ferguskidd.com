@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Studio | Fergus Kidd{% endblock %}
+{% block body_class %}page-studio{% endblock %}
+{% block head %}
+<meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block content %}
+{% if authed %}
+<section class="studio">
+    <div class="studio-bar">
+        <div>
+            <p class="page-kicker">Private</p>
+            <h1 class="page-title">Studio</h1>
+        </div>
+        <div class="studio-actions">
+            <button class="btn btn-ghost" id="new-chat" type="button">New chat</button>
+            <form method="post" action="/ai/logout">
+                <button class="btn" type="submit">Sign out</button>
+            </form>
+        </div>
+    </div>
+    {% if not model_ready %}
+    <p class="notice">Sign-in is on. Replies need Azure OpenAI settings, or an OpenAI key, on the server.</p>
+    {% endif %}
+    <div class="transcript" id="transcript" aria-live="polite">
+        <div class="empty-state" id="empty-state">Ask for a draft, a critique, a plan, or a second opinion.</div>
+    </div>
+    <form class="composer" id="composer">
+        <label class="sr" for="prompt">Message</label>
+        <textarea id="prompt" rows="1" maxlength="8000" placeholder="Message the studio" required></textarea>
+        <button class="btn" id="send" type="submit">Send</button>
+    </form>
+</section>
+{% else %}
+<section class="gate">
+    <p class="page-kicker">Private</p>
+    <h1 class="page-title">The <em>studio.</em></h1>
+    <p class="lede">A private agent. Just you.</p>
+    {% if not login_ready %}
+    <p class="notice">Sign-in isn't configured on this server yet. Set AI_PASSWORD_HASH and AI_SESSION_SECRET, then restart.</p>
+    {% endif %}
+    {% if error %}
+    <p class="form-error" role="alert">{{ error }}</p>
+    {% endif %}
+    <form class="gate-form" method="post" action="/ai/login">
+        <div class="hp" aria-hidden="true">
+            <label for="website">Website</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <label class="field">
+            <span>Username</span>
+            <input name="username" type="text" autocomplete="username" maxlength="64" required value="{{ username }}">
+        </label>
+        <label class="field">
+            <span>Password</span>
+            <input name="password" type="password" autocomplete="current-password" maxlength="200" required>
+        </label>
+        <button class="btn" type="submit" {% if not login_ready %}disabled{% endif %}>Enter</button>
+    </form>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if authed %}
+<script src="/static/js/ai.js" defer></script>
+{% endif %}
+{% endblock %}

@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Page Not Found - Fergus Kidd{% endblock %}
+{% block title %}Not found | Fergus Kidd{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto text-center">
-    <h1 class="text-6xl font-bold text-main-fg mb-4">404</h1>
-    <p class="text-2xl text-main-fg opacity-70 mb-8">Page Not Found</p>
-    <p class="text-main-fg opacity-70 mb-8">The page you're looking for doesn't exist or has been moved.</p>
-    <a href="/" class="inline-block bg-steel-blue text-white px-6 py-3 rounded-lg hover:bg-blue-700">Return Home</a>
-</div>
-{% endblock %} 
+<p class="page-kicker">404</p>
+<h1 class="page-title">This page <em>isn't here.</em></h1>
+<p class="lede">The link may have moved. The notes are still on the home page.</p>
+<p><a class="btn" href="/">Back home</a></p>
+{% endblock %}

@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from ai_agent import router as ai_router
 from pathlib import Path
 import markdown2
 import json
@@ -14,6 +16,32 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+app.include_router(ai_router)
+
+
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+    response.headers.setdefault("Permissions-Policy", "geolocation=(), camera=()")
+    path = request.url.path
+    if path == "/ai" or path.startswith("/ai/"):
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["Cache-Control"] = "no-store"
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "img-src 'self' data:; "
+            "style-src 'self' https://fonts.googleapis.com; "
+            "font-src https://fonts.gstatic.com; "
+            "script-src 'self'; "
+            "connect-src 'self'; "
+            "frame-ancestors 'none'; "
+            "base-uri 'self'; "
+            "form-action 'self'"
+        )
+    return response
 
 # Azure Storage configuration
 AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")
@@ -33,6 +61,18 @@ except Exception as e:
 
 # Set up templates first
 templates = Jinja2Templates(directory="templates")
+
+
+@app.exception_handler(404)
+async def not_found(request: Request, exc):
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept or "*/*" in accept or not accept:
+        return templates.TemplateResponse(
+            "404.html",
+            {"request": request, "current_year": datetime.now().year},
+            status_code=404,
+        )
+    return JSONResponse({"detail": "Not found"}, status_code=404)
 
 # Mount static files - ensure proper configuration for url_for
 static_files = StaticFiles(directory="static")

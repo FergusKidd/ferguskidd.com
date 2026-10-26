@@ -3,15 +3,14 @@
 {% block title %}Talk to Fergus | Fergus Kidd{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold text-steel-blue mb-8">Talk to Fergus</h1>
-    <div class="bg-main-bg rounded-lg shadow-md p-6 mb-6">
-        <p class="text-lg text-main-fg mb-6 text-justify">
-            Have a question about AI, technology, or just want to chat? I'm here to help! Click the chat icon in the bottom left corner to start a conversation.
-        </p>
-    </div>
+<p class="page-kicker">Live</p>
+<h1 class="page-title">Talk to <em>Fergus.</em></h1>
+<div class="panel">
+    <p class="lede">A question about AI, a robot, or something in between. Open the chat in the corner when you're ready.</p>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
 !function(window){
     const host="https://labs.heygen.com",
@@ -78,4 +77,4 @@
     document.body.appendChild(wrapDiv)
 }(globalThis);
 </script>
-{% endblock %} 
+{% endblock %}

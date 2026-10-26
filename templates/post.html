@@ -3,60 +3,19 @@
 {% block title %}{{ post.title }} | Fergus Kidd{% endblock %}
 
 {% block content %}
-<article class="max-w-4xl mx-auto card-hover rounded-lg shadow-md overflow-hidden">
+<article class="article-shell">
+    <header>
+        <p class="page-kicker"><time datetime="{{ post.date }}">{{ post.date | format_date }}</time></p>
+        <h1 class="page-title">{{ post.title }}</h1>
+    </header>
     {% if post.feature_image %}
-    <div class="w-full h-64 md:h-80 bg-main-bg">
-        <img src="{{ post.feature_image }}" alt="{{ post.title }}" class="w-full h-full object-cover">
-    </div>
+    <figure class="post-media">
+        <img src="{{ post.feature_image }}" alt="">
+    </figure>
     {% endif %}
-    
-    <div class="p-8">
-        <h1 class="text-4xl font-bold text-main-fg mb-4">{{ post.title }}</h1>
-        <div class="text-main-fg opacity-70 mb-6">
-            <span>{{ post.date | format_date }}</span>
-            {% if post.category %}
-            <span class="mx-2">•</span>
-            <span class="text-steel-blue">{{ post.category }}</span>
-            {% endif %}
-        </div>
-        <div class="prose max-w-none mb-6">
-            {{ post.content | safe }}
-        </div>
-        {% if post.tags %}
-        <div class="mt-4">
-            {% for tag in post.tags.split(',') %}
-            <span class="inline-block bg-main-bg rounded-full px-3 py-1 text-sm font-semibold text-main-fg mr-2 mb-2 border border-main-fg">
-                #{{ tag.strip() }}
-            </span>
-            {% endfor %}
-        </div>
-        {% endif %}
-        <div class="mt-8">
-            <a href="/" class="text-steel-blue hover:text-blue-800">← Back</a>
-        </div>
+    <div class="prose">
+        {{ post.content | safe }}
     </div>
+    <a class="back" href="/">Back to notes</a>
 </article>
-
-<style>
-/* Make images smaller with larger margins */
-.prose figure.kg-card.kg-image-card {
-    margin: 2rem 0;
-    max-width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.prose figure.kg-card.kg-image-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Ensure text content uses full width */
-.prose p {
-    max-width: none;
-    margin: 1rem 0;
-}
-</style>
-{% endblock %} 
+{% endblock %}

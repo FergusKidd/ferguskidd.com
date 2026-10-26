@@ -3,46 +3,27 @@
 {% block title %}Videos | Fergus Kidd{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto">
-    <h1 class="text-4xl font-bold text-main-fg mb-8">Videos</h1>
-    
-    {% if videos %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for video in videos %}
-            <div class="bg-main-bg rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div class="aspect-video bg-main-bg flex items-center justify-center">
-                    <video class="w-full h-full object-cover" controls preload="metadata">
-                        <source src="{{ video.url }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold text-main-fg mb-2">
-                        {{ video.name.replace('.mp4', '').replace('_', ' ').replace('-', ' ').title() }}
-                    </h3>
-                    <div class="text-sm text-main-fg opacity-70 mb-2">
-                        <span>{{ video.last_modified.strftime('%B %d, %Y') }}</span>
-                        {% if video.size %}
-                        <span class="mx-2">•</span>
-                        <span>{{ "%.1f"|format(video.size / 1024 / 1024) }} MB</span>
-                        {% endif %}
-                    </div>
-                    <a href="/videos/{{ video.name }}" class="text-blue-600 hover:text-blue-800 text-sm">
-                        View Details →
-                    </a>
-                </div>
-            </div>
-            {% endfor %}
+<p class="page-kicker">Archive</p>
+<h1 class="page-title">Videos</h1>
+{% if videos %}
+<div class="video-grid">
+    {% for video in videos %}
+    <article class="video-card">
+        <video controls preload="metadata">
+            <source src="{{ video.url }}" type="video/mp4">
+        </video>
+        <div>
+            <h2>{{ video.name.replace('.mp4', '').replace('_', ' ').replace('-', ' ').title() }}</h2>
+            <p class="meta">
+                {{ video.last_modified.strftime('%B %d, %Y') }}
+                {% if video.size %} · {{ "%.1f"|format(video.size / 1024 / 1024) }} MB{% endif %}
+            </p>
+            <a class="back" href="/videos/{{ video.name }}">Details</a>
         </div>
-    {% else %}
-        <div class="text-center py-12">
-            <div class="text-main-fg opacity-70 text-lg">No videos available at the moment.</div>
-            <div class="text-main-fg opacity-50 text-sm mt-2">Check back later for new content!</div>
-        </div>
-    {% endif %}
-    
-    <div class="mt-8">
-        <a href="/" class="text-blue-600 hover:text-blue-800">← Back</a>
-    </div>
+    </article>
+    {% endfor %}
 </div>
-{% endblock %} 
+{% else %}
+<p class="missing">No videos available right now.</p>
+{% endif %}
+{% endblock %}
