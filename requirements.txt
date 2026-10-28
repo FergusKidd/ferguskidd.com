@@ -5,8 +5,10 @@ python-multipart==0.0.9
 markdown2==2.4.12
 python-slugify==8.0.4
 azure-storage-blob==12.19.0
+azure-data-tables==12.7.0
 python-dotenv==1.0.0
 gunicorn==21.2.0
 bcrypt==4.2.1
 openai==1.58.1
 itsdangerous==2.2.0
+httpx==0.28.1

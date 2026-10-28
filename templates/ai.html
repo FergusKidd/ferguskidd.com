@@ -8,31 +8,82 @@
 
 {% block content %}
 {% if authed %}
-<section class="studio">
-    <div class="studio-bar">
-        <div>
-            <p class="page-kicker">Private</p>
-            <h1 class="page-title">Studio</h1>
+<section class="studio" id="studio" data-ready="1">
+    <aside class="studio-rail" aria-label="Chat history">
+        <div class="rail-head">
+            <p class="page-kicker">History</p>
+            <button class="btn btn-ghost btn-compact" id="new-chat" type="button">New</button>
         </div>
-        <div class="studio-actions">
-            <button class="btn btn-ghost" id="new-chat" type="button">New chat</button>
-            <form method="post" action="/ai/logout">
-                <button class="btn" type="submit">Sign out</button>
-            </form>
+        <div class="chat-list" id="chat-list"></div>
+        <button class="btn btn-ghost rail-settings" id="open-settings" type="button">Memory &amp; settings</button>
+    </aside>
+    <div class="studio-main">
+        <div class="studio-bar">
+            <div>
+                <p class="page-kicker">Private</p>
+                <h1 class="page-title" id="chat-title">Studio</h1>
+            </div>
+            <div class="studio-actions">
+                <form method="post" action="/ai/logout">
+                    <button class="btn" type="submit">Sign out</button>
+                </form>
+            </div>
         </div>
+        {% if not model_ready %}
+        <p class="notice">Sign-in is on. Replies need Azure OpenAI settings, or an OpenAI key, on the server.</p>
+        {% endif %}
+        <div class="transcript" id="transcript" aria-live="polite">
+            <div class="empty-state" id="empty-state">Ask for a draft, a critique, a plan, or a second opinion.</div>
+        </div>
+        <form class="composer" id="composer">
+            <label class="sr" for="prompt">Message</label>
+            <textarea id="prompt" rows="1" maxlength="8000" placeholder="Message the studio" required></textarea>
+            <button class="btn" id="send" type="submit">Send</button>
+        </form>
     </div>
-    {% if not model_ready %}
-    <p class="notice">Sign-in is on. Replies need Azure OpenAI settings, or an OpenAI key, on the server.</p>
-    {% endif %}
-    <div class="transcript" id="transcript" aria-live="polite">
-        <div class="empty-state" id="empty-state">Ask for a draft, a critique, a plan, or a second opinion.</div>
-    </div>
-    <form class="composer" id="composer">
-        <label class="sr" for="prompt">Message</label>
-        <textarea id="prompt" rows="1" maxlength="8000" placeholder="Message the studio" required></textarea>
-        <button class="btn" id="send" type="submit">Send</button>
-    </form>
 </section>
+
+<dialog class="studio-sheet" id="settings-sheet">
+    <form method="dialog" class="sheet-card">
+        <div class="sheet-head">
+            <div>
+                <p class="page-kicker">Studio</p>
+                <h2 class="sheet-title">Memory &amp; settings</h2>
+            </div>
+            <button class="btn btn-ghost" value="cancel" type="submit">Close</button>
+        </div>
+        <p class="sheet-copy">Chats and memories persist in Azure Storage on this account. Retention only drops unpinned history.</p>
+        <div class="settings-grid">
+            <label class="field">
+                <span>Keep chats for (days)</span>
+                <input id="retention-days" type="number" min="7" max="730" step="1">
+            </label>
+            <label class="toggle">
+                <input id="memory-enabled" type="checkbox">
+                <span>Auto-save durable memories from chats</span>
+            </label>
+            <label class="toggle">
+                <input id="auto-title" type="checkbox">
+                <span>Title chats from the first message</span>
+            </label>
+        </div>
+        <p class="backend-pill" id="backend-pill"></p>
+        <div class="sheet-actions">
+            <button class="btn" id="save-settings" type="button">Save settings</button>
+            <button class="btn btn-ghost" id="clear-memories" type="button">Clear memories</button>
+        </div>
+        <div class="memory-block">
+            <div class="memory-head">
+                <h3>Memories</h3>
+            </div>
+            <form class="memory-form" id="memory-form">
+                <input id="memory-text" type="text" maxlength="400" placeholder="Pin a fact, preference, or project note" required>
+                <button class="btn" type="submit">Pin</button>
+            </form>
+            <div class="memory-list" id="memory-list"></div>
+        </div>
+    </form>
+</dialog>
 {% else %}
 <section class="gate">
     <p class="page-kicker">Private</p>
