@@ -42,9 +42,6 @@ instance/
 # Environment variables
 .env
 
-# Private studio transcripts
-data/
-
 # OS
 .DS_Store
 Thumbs.db

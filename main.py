@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from ai_agent import router as ai_router
 from pathlib import Path
 import markdown2
 import json
@@ -16,7 +15,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
-app.include_router(ai_router)
 
 
 @app.middleware("http")
@@ -26,21 +24,6 @@ async def security_headers(request: Request, call_next):
     response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
     response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
     response.headers.setdefault("Permissions-Policy", "geolocation=(), camera=()")
-    path = request.url.path
-    if path == "/ai" or path.startswith("/ai/"):
-        response.headers["X-Frame-Options"] = "DENY"
-        response.headers["Cache-Control"] = "no-store"
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; "
-            "img-src 'self' data:; "
-            "style-src 'self' https://fonts.googleapis.com; "
-            "font-src https://fonts.gstatic.com; "
-            "script-src 'self'; "
-            "connect-src 'self'; "
-            "frame-ancestors 'none'; "
-            "base-uri 'self'; "
-            "form-action 'self'"
-        )
     return response
 
 # Azure Storage configuration

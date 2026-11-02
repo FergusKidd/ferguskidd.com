@@ -8,7 +8,6 @@ This is the source code for my personal website and blog, built with FastAPI, Ji
 
 - **Editorial layout** with a dark-first theme, light mode, and high-contrast mode
 - **Responsive, mobile-friendly design**
-- **Private studio** at `/ai` — a single-user agent behind a signed-in session
 - **Markdown-based content system** (`content/posts/`)
 - **Video and audio integration** via Azure Blob Storage
 - **Jinja2 templates** for all pages (home, post, about, videos, etc.)
@@ -27,7 +26,7 @@ This is the source code for my personal website and blog, built with FastAPI, Ji
    ```bash
    pip install -r requirements.txt
    ```
-3. **Create a `.env` file** (see `.env.example`) with your Azure Storage connection string, and the studio settings if you want `/ai`:
+3. **Create a `.env` file** (see `.env.example`) with your Azure Storage connection string:
    ```
    AZURE_CONNECTION_STRING=your_connection_string_here
    AZURE_CONTAINER_NAME=video
@@ -45,7 +44,6 @@ This is the source code for my personal website and blog, built with FastAPI, Ji
 2. Configure the following application settings in Azure Portal:
    - `AZURE_CONNECTION_STRING`: Your Azure Storage connection string
    - `AZURE_CONTAINER_NAME`: video
-   - Studio settings from `.env.example` if you use `/ai` (`AI_PASSWORD_HASH`, `AI_SESSION_SECRET`, and either Azure OpenAI or `OPENAI_API_KEY`)
 3. Deploy using Azure CLI or GitHub Actions
 4. The app uses Gunicorn with Uvicorn workers for production (see `startup.sh` and `gunicorn.conf.py`)
 
@@ -95,24 +93,6 @@ This is the source code for my personal website and blog, built with FastAPI, Ji
 - **Edit markdown in `content/posts/`** for blog content.
 
 ---
-
-## Private studio (`/ai`)
-
-`/ai` is a single-user chat agent. It stays locked until the server has a password hash and a session secret. Transcripts are stored on the server for that sign-in only and deleted on sign-out.
-
-1. Generate a hash (12+ characters). The plaintext password is never saved:
-   ```bash
-   python scripts/hash_ai_password.py
-   ```
-2. Generate a session secret:
-   ```bash
-   python -c "import secrets; print(secrets.token_urlsafe(48))"
-   ```
-3. Put both in the environment, plus a model connection. Azure OpenAI is used when `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_KEY`, and `AZURE_OPENAI_DEPLOYMENT` are all set. Otherwise set `OPENAI_API_KEY`.
-4. Optional: write a custom system prompt to `data/ai/prompt.md`, or set `AI_SYSTEM_PROMPT`.
-5. Open `/ai`, sign in, and chat. Failed attempts lock that client out for 15 minutes after 8 misses.
-
-The username defaults to `fergus` (`AI_USERNAME`). Set these as Azure App Settings in production. Do not commit them.
 
 ## Requirements
 
