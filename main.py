@@ -493,13 +493,6 @@ async def post(request: Request, slug: str):
         {"request": request, "post": post, "current_year": datetime.now().year}
     )
 
-@app.get("/talk")
-async def talk(request: Request):
-    return templates.TemplateResponse(
-        "talk.html",
-        {"request": request, "current_year": datetime.now().year}
-    )
-
 @app.get("/videos")
 async def videos(request: Request):
     """Display all available videos from Azure Storage"""
